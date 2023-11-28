@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 /*builder docs
 -Its going to create Kestrel server and host the application
 -It ll read our config file we pass to it.appsetting and dev.json.
@@ -19,6 +20,13 @@ builder.Services.AddDbContext<DataContext>(opt =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+    });
+});
 
 var app = builder.Build();
 
@@ -30,6 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 
