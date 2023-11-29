@@ -1,4 +1,9 @@
 using System.Collections.Immutable;
+using API.Extensions;
+using Application.Activities;
+using Application.Core;
+
+
 /*builder docs
 -Its going to create Kestrel server and host the application
 -It ll read our config file we pass to it.appsetting and dev.json.
@@ -8,25 +13,8 @@ using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/* Sercices docs
-Add services to the container.Services are our app logic and expend our functionalities.
-We ll use DI to inject our services to other classes.
-*/
-
 builder.Services.AddControllers();
-builder.Services.AddDbContext<DataContext>(opt =>
-{
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddCors(opt =>
-{
-    opt.AddPolicy("CorsPolicy", policy =>
-    {
-        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
-    });
-});
+builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
