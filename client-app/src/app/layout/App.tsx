@@ -4,7 +4,7 @@ import NavBar from './NavBar';
 import './styles.css';
 import { observer } from 'mobx-react-lite';
 import { Outlet, useLocation } from 'react-router-dom';
-import HomePage from '../../features/HomePage';
+import HomePage from '../../features/home/HomePage';
 
 function App() {
   const location = useLocation();	//ovo je hook koji nam daje informacije o trenutnoj lokaciji

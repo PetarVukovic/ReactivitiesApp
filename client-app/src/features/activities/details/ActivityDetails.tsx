@@ -1,9 +1,13 @@
-import { Button, Card, Image } from "semantic-ui-react"
+import { Grid } from "semantic-ui-react"
 import { useStore } from "../../../app/stores/store";
 import LoadingComponents from "../../../app/layout/LoadingComponents";
 import { observer } from "mobx-react-lite";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import ActivityDetailedChat from "./ActivityDetailedChat";
+import ActivityDetailedInfo from "./ActivityDetailedInfo";
+import ActivityDetailedHeader from "./ActivityDetailedHeader";
+import ActivityDetailedSidebar from "./ActivityDetailedSidebar";
 
 export const ActivityDetails = observer(() => {
 
@@ -17,27 +21,20 @@ export const ActivityDetails = observer(() => {
 
     if (loadingInitial || !activity) return <LoadingComponents inverted={true} content="Loading..." />;
     return (
-        <Card >
-            <Image src={`/assets/categoryImages/${activity.category}.jpg`} />
-            <Card.Content>
-                <Card.Header>{activity.title}</Card.Header>
-                <Card.Meta>
-                    <span className='date'>{activity.date}</span>
+        <Grid>
+            <Grid.Column width={10}>
 
-                </Card.Meta>
-                <Card.Description>
-                    {activity.description}
-                </Card.Description>
+                <ActivityDetailedHeader activity={activity} />
+                <ActivityDetailedChat />
+                <ActivityDetailedInfo activity={activity} />
+
+            </Grid.Column>
+            <Grid.Column width={6}>
+                <ActivityDetailedSidebar />
+            </Grid.Column>
 
 
-            </Card.Content>
-            <Card.Content extra>
-                <Button.Group widths='2'>
-                    <Button as={Link} to={`/manage/${activity.id}`} basic color='blue' content='Edit' />
-                    <Button as={Link} to='/activities' basic color='grey' content='Cancel' />
-                </Button.Group>
-            </Card.Content>
+        </Grid>
 
-        </Card>
     )
 })
