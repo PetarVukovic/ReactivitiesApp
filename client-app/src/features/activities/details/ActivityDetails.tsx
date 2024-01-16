@@ -1,33 +1,36 @@
 import { Button, Card, Image } from "semantic-ui-react"
-import { Activity } from "../../../app/models/activity"
-interface Props {
-    activity: Activity;
-    cancelSelectActivity: () => void;
-    openForm: (id: string) => void;
-}
-export const ActivityDetails = (props: Props) => {
+import { useStore } from "../../../app/stores/store";
+import LoadingComponents from "../../../app/layout/LoadingComponents";
+import { observer } from "mobx-react-lite";
+
+export const ActivityDetails = observer(() => {
+
+    const { activityStore } = useStore();
+    const { selectedActivity: activity, openForm, cancelSelectedActivity } = activityStore;
+
+    if (!activity) return <LoadingComponents inverted={true} content="Loading..." />;
     return (
         <Card>
-            <Image src={`/assets/categoryImages/${props.activity.category}.jpg`} />
+            <Image src={`/assets/categoryImages/${activity.category}.jpg`} />
             <Card.Content>
-                <Card.Header>{props.activity.title}</Card.Header>
+                <Card.Header>{activity.title}</Card.Header>
                 <Card.Meta>
-                    <span className='date'>{props.activity.date}</span>
+                    <span className='date'>{activity.date}</span>
 
                 </Card.Meta>
                 <Card.Description>
-                    {props.activity.description}
+                    {activity.description}
                 </Card.Description>
 
 
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button onClick={() => props.openForm(props.activity.id)} basic color='blue' content='Edit' />
-                    <Button onClick={props.cancelSelectActivity} basic color='grey' content='Cancel' />
+                    <Button onClick={() => openForm(activity.id)} basic color='blue' content='Edit' />
+                    <Button onClick={cancelSelectedActivity} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
 
         </Card>
     )
-}
+})
