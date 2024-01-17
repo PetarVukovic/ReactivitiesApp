@@ -5,6 +5,7 @@ import './styles.css';
 import { observer } from 'mobx-react-lite';
 import { Outlet, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const location = useLocation();	//ovo je hook koji nam daje informacije o trenutnoj lokaciji
@@ -15,6 +16,7 @@ function App() {
         //If the path is '/', it renders the HomePage component. Otherwise, it renders the NavBar and an Outlet inside a Container. 
         //The Outlet component is where the child routes will be rendered.
       }
+      <ToastContainer position='bottom-right' hideProgressBar theme='colored' />
       {location.pathname === '/' ? <HomePage /> : (
         <>
           <NavBar />

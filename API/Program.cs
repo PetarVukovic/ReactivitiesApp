@@ -1,7 +1,7 @@
-using System.Collections.Immutable;
+
 using API.Extensions;
-using Application.Activities;
-using Application.Core;
+using API.Middleware;
+
 
 
 /*builder docs
@@ -17,6 +17,8 @@ builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 /* Configure the HTTP request pipeline.
 Middleware.It can do something with http request in its way in and out 
