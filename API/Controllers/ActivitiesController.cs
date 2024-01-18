@@ -1,6 +1,7 @@
 using Application.Activities;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,11 +16,13 @@ namespace API.Controllers
         The Send method of the mediator handles the communication with the corresponding handlers and executes the logic defined in them.
         */
 
+
         [HttpGet]//api/activities
         public async Task<IActionResult> GetActivities()
         {
             return HandleResult(await Mediator.Send(new List.Query()));
         }
+        [Authorize]
         [HttpGet("{id}")]//api/activities/id
         public async Task<IActionResult> GetActivity(Guid id)
         {
