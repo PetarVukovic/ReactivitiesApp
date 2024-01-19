@@ -10,7 +10,7 @@ const ValidationError = ({ errors }: Props) => {
         <Message error>
             {errors && (
                 <Message.List>
-                    {errors.map((err: any, i) => (
+                    {errors.map((err: string, i) => (
                         <Message.Item key={i}>{err}</Message.Item>
                     ))}
                 </Message.List>

@@ -56,12 +56,14 @@ public class AccountController : ControllerBase
     {
         if (_userManager.Users.AnyAsync(x => x.Email == registerDto.Email).Result)
         {
-            return BadRequest("Email already taken");
+            ModelState.AddModelError("email", "Email taken");
+            return ValidationProblem(ModelState);
         }
 
         if (_userManager.Users.AnyAsync(x => x.UserName == registerDto.Username).Result)
         {
-            return BadRequest("Username already taken");
+            ModelState.AddModelError("username", "Username taken");
+            return ValidationProblem(ModelState);
         }
 
         var user = new AppUser
