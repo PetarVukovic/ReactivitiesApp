@@ -8,8 +8,7 @@ namespace Domain
 
         public string Bio { get; set; }
 
-        // public string Image { get; set; }
+        public ICollection<ActivityAttendee> Activities { get; set; }
 
-        // public string RefreshToken { get; set; }
     }
 }
