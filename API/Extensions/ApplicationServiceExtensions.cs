@@ -2,9 +2,11 @@
 using Application.Activities;
 using Application.Core;
 using Application.Interfaces;
+using Application.Photos;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure;
+using Infrastructure.Photos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +55,8 @@ namespace API.Extensions
             services.AddValidatorsFromAssemblyContaining<Create>();//Klasa inside assembly gdje validiramo
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccesor>();
+            services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
 
 
 

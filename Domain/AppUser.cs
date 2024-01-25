@@ -10,5 +10,8 @@ namespace Domain
 
         public ICollection<ActivityAttendee> Activities { get; set; }
 
+        //This will be one to many relationship between AppUser and Photo
+        public ICollection<Photo> Photos { get; set; }
+
     }
 }
