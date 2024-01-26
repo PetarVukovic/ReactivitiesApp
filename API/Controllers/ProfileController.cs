@@ -11,5 +11,11 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Details.Query { Username = username }));
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Edit(Edit.Command command)// This Edit.Command object likely contains the data needed to update a user's profile.
+        {
+            return HandleResult(await Mediator.Send(command));
+        }
+
     }
 }

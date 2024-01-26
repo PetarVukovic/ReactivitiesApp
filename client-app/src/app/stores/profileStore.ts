@@ -111,4 +111,25 @@ export default class ProfileStore {
 
     }
 
+    updateProfile = async (profile: Partial<IProfile>) => {
+        try {
+            this.loadaing = true;
+            await agent.Profiles.updateProfile(profile);
+            runInAction(() => {
+                //Trebamo updateati i user store jer se tamo nalazi display name
+                if (profile.displayName && profile.displayName !== store.userStore.user?.displayName) {
+                    store.userStore.setDisplayName(profile.displayName);
+                }
+                this.profile = { ...this.profile, ...profile as IProfile };
+                this.loadaing = false;
+            })
+
+        } catch (error) {
+            console.log(error);
+            runInAction(() => { this.loadaing = false; })
+
+
+        }
+    }
+
 }
