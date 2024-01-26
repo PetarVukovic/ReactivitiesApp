@@ -10,7 +10,7 @@ interface Props {
 
 const ProfileCard = observer(({ profile }: Props) => {
     return (
-        <Card as={Link} to={`/Profiles/${profile.username}}`}>
+        <Card as={Link} to={`/profiles/${profile.username}}`}>
             <Image src={profile.image || '/assets/user.png'} />
             <Card.Content   >
                 <Card.Header>{profile.displayName}</Card.Header>
