@@ -1,6 +1,7 @@
 
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Domain;
 using Microsoft.AspNetCore.Identity;
 
@@ -34,6 +35,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();//Registrira nase endpointove (kontrolere)
+app.MapHub<ChatHub>("/chat");// And then we give it a route and we're simply going to say forward slash chat as the routes that we're
+//going to direct users to when they connect to our chat hub.
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
