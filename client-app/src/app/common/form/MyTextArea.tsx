@@ -6,25 +6,24 @@ interface Props {
     name: string;
     rows: number;
     label?: string;
-
 }
-const MyTextArea = (props: Props) => {
 
-    //matching field and meta to the useField hook.!! casting into boolean
-    const [field, meta] = useField(props.name);
+const MyTextArea = (props: Props) => {
+    const [field, meta] = useField(props.name!);
+    const label = props.label || ""; // Add a default value for props.label
+
     return (
         <Form.Field error={meta.touched && !!meta.error}>
-            <label>{props.label}</label>
+            <label>{label}</label>
             <textarea {...field} {...props} />
             {meta.touched && meta.error ? (
                 <Label basic color='red'>{meta.error}</Label>
             ) : (
                 null
             )}
-
-
         </Form.Field>
     )
 }
+
 
 export default MyTextArea

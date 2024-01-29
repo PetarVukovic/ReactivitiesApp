@@ -11,39 +11,38 @@ interface Props {
 }
 const ProfileEditForm = observer(({ setEditMode }: Props) => {
     const { profileStore: { profile, updateProfile } } = useStore();
-    const validationSchema = Yup.object({
-        displayName: Yup.string().required()
-    });
     return (
         <>
             <Formik
                 initialValues={{
-                    displayName: profile?.displayName, bio:
-                        profile?.bio
+                    displayName: profile?.displayName,
+                    bio: profile?.bio || ''
                 }}
-                onSubmit={values => (updateProfile(values).then(() => {
-                    setEditMode(false);
-                }))} // updateProfile(values) is a promise
-                validationSchema={validationSchema}
-            >
+                onSubmit={values => {
+                    updateProfile(values).then(() => {
+                        setEditMode(false);
+                    })
+                }}
+                validationSchema={Yup.object({
+                    displayName: Yup.string().required()
+                })} >
                 {({ isSubmitting, isValid, dirty }) => (
                     <Form className='ui form'>
-                        <MyTextInputs name='displayName' placeholder='Display Name' />
-                        <MyTextArea rows={3} name='bio' placeholder=' Add your Bio' />
+                        <MyTextInputs
+                            placeholder='Display Name'
+                            name='displayName'
+                        />
+                        <MyTextArea rows={3} placeholder='Add your bio' name='bio' />
                         <Button
-                            loading={isSubmitting}
-                            disabled={!isValid || !dirty}
-                            floated='right'
-                            type='submit'
-                            size='large'
                             positive
+                            type='submit'
+                            loading={isSubmitting}
                             content='Update profile'
-
+                            floated='right'
+                            disabled={!isValid || !dirty}
                         />
                     </Form>
                 )}
-
-
             </Formik>
         </>
 

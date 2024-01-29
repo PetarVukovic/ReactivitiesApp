@@ -10,6 +10,8 @@ export default observer(function ProfileAbout() {
     const { profileStore } = useStore();
     const { isCurrentUser, profile } = profileStore;
     const [editMode, setEditMode] = useState(false);
+    console.log(isCurrentUser);
+
     return (
         <Tab.Pane>
             <Grid>

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { router } from '../router/Routes';
 import { store } from '../stores/store';
 import { User, UserFormValues } from '../models/user';
-import { IPhoto, IProfile } from '../models/profile';
+import { IPhoto, Profile } from '../models/profile';
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -95,7 +95,7 @@ const Account = {
 }
 
 const Profiles = {
-    get: (username: string) => requests.get<IProfile>(`/profiles/${username}`),
+    get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
     uploadPhoto: (file: Blob) => {
         const formData = new FormData();
         formData.append('File', file);
@@ -105,7 +105,9 @@ const Profiles = {
     },
     setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMainPhoto`, {}),
     deletePhoto: (id: string) => requests.del(`/photos/${id}`),
-    updateProfile: (profile: Partial<IProfile>) => requests.put(`/profiles`, profile),//Partial znaci da ne moramo sve propertije poslati
+    updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),//Partial znaci da ne moramo sve propertije poslati
+    updateFollowing: (username: string) => requests.post(`/follow/${username}`, {}),//{} je prazan objekt jer ne saljemo nista a username je parametar
+    listFollowings: (username: string, predicate: string) => requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),//?predicate=${predicate} je query string
 }
 
 const agent = {

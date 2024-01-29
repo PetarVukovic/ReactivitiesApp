@@ -20,8 +20,10 @@ namespace Application.Profiles
         {
             private readonly IMapper _mapper;
             private readonly DataContext _dataContext;
-            public Handler(DataContext dataContext, IMapper mapper)
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext dataContext, IMapper mapper, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _dataContext = dataContext;
                 _mapper = mapper;
 
@@ -31,7 +33,7 @@ namespace Application.Profiles
                 //We need to map our user object to our profile object.Singleordefault is here because we are only looking for one user
                 //Project to is a method that will project our user object to our profile object
                 var user = await _dataContext.Users
-                    .ProjectTo<Profile>(_mapper.ConfigurationProvider)
+                    .ProjectTo<Profile>(_mapper.ConfigurationProvider, new { currentUsername = _userAccessor.GetCurrentUsername() })
                     .SingleOrDefaultAsync(x => x.Username == request.Username);
 
                 if (user == null) return null;

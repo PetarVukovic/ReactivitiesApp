@@ -13,5 +13,11 @@ namespace Domain
         //This will be one to many relationship between AppUser and Photo
         public ICollection<Photo> Photos { get; set; }
 
+        //This will be one to many relationship between AppUser and UserFollowing
+        public ICollection<UserFollowing> Followings { get; set; }
+
+        //This will be one to many relationship between AppUser and UserFollowing
+        public ICollection<UserFollowing> Followers { get; set; }
+
     }
 }

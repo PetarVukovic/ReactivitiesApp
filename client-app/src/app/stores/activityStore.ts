@@ -220,4 +220,20 @@ export default class ActivityStore {
     clearSelectedActivity = () => {
         this.selectedActivity = undefined;
     }
+
+    //Update attende following status inside each activity
+    updateAttendeeFollowing = (username: string) => {
+        this.activityRegistry.forEach(activity => {
+            activity.attendees.forEach(attendee => {
+                //This is the username that we're about to follow.
+                if (attendee.username === username) {
+                    //If we're following them, we're going to decrement the followers count. If we're not following them, we're going to increment the followers count.
+                    attendee.following ? attendee.followersCount-- : attendee.followersCount++;
+                    attendee.following = !attendee.following;//flag for following
+                }
+            })
+        })
+
+    }
+
 }
