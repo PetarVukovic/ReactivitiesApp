@@ -4,7 +4,8 @@ import { toast } from 'react-toastify';
 import { router } from '../router/Routes';
 import { store } from '../stores/store';
 import { User, UserFormValues } from '../models/user';
-import { IPhoto, Profile } from '../models/profile';
+import { IPhoto, IUserActivity, Profile } from '../models/profile';
+import { PaginatedResult } from '../models/pagination';
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -17,6 +18,11 @@ axios.defaults.baseURL = 'http://localhost:5000/api';
 axios.interceptors.response.use(async response => {
 
     await sleep(1000);
+    const pagination = response.headers['pagination'];
+    if (pagination) {
+        response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+        return response as AxiosResponse<PaginatedResult<unknown>>;
+    }
     return response;
 
 
@@ -80,7 +86,7 @@ const requests = {
 }
 
 const Activities = {
-    list: () => requests.get<Activity[]>('/activities'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Activity[]>>('/activities', { params }).then(responseBody),
     details: (id: string) => requests.get<Activity>(`/activities/${id}`),
     create: (activity: ActivityFormValues) => requests.post<void>('/activities', activity),
     update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
@@ -108,6 +114,7 @@ const Profiles = {
     updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),//Partial znaci da ne moramo sve propertije poslati
     updateFollowing: (username: string) => requests.post(`/follow/${username}`, {}),//{} je prazan objekt jer ne saljemo nista a username je parametar
     listFollowings: (username: string, predicate: string) => requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),//?predicate=${predicate} je query string
+    listActivities: (username: string, predicate: string) => requests.get<IUserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
 }
 
 const agent = {

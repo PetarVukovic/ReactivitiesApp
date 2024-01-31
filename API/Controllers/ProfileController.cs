@@ -19,5 +19,11 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(command));
         }
 
+        [HttpGet("{username}/activities")]
+        public async Task<IActionResult> GetUserActivities(string username, string predicate)// This is the route that will be used to access the profile of a specific user.
+        {
+            return HandleResult(await Mediator.Send(new Application.Activities.ListActivities.Query { Username = username, Predicate = predicate }));
+        }
+
     }
 }

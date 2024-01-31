@@ -1,4 +1,5 @@
 using Application.Activities;
+using Application.Core;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,13 @@ namespace API.Controllers
         On salje send u application layer i onda se to vraca u API.
         The Send method of the mediator handles the communication with the corresponding handlers and executes the logic defined in them.
         */
-
+        //FromQuery is used to get the parameters from the query string
+        //UseCase {{url}}/api/activities ce nam vratit 2 activities jer je default pageSize 2 ili dr. ako mu nedamo query params.
         [Authorize]
         [HttpGet]//api/activities
-        public async Task<IActionResult> GetActivities()
+        public async Task<IActionResult> GetActivities([FromQuery] ActivityParams param)
         {
-            return HandleResult(await Mediator.Send(new List.Query()));
+            return HandlePagedResult(await Mediator.Send(new List.Query { Params = param }));
         }
 
         [HttpGet("{id}")]//api/activities/id
